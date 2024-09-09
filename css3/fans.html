@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>CloudStudio</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<style lang="scss">
+  * {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+  :root {
+    /* 底座长宽高 */
+    --btm-length: 18.75rem;
+    --btm-width: 23.4375rem;
+    --btm-height: 1.875rem;
+    /* 底部开关按钮大小 */
+    --speed-btn-size: 2rem;
+    --speed-btn-active: 4;
+    --speed-btn-hover: 2.5;
+    --speed-btn-gap: 0.6rem;
+    /* 支架大小(连接底座) */
+    --bracket-width: 5.25rem;
+    --bracket-height: 23.4375rem;
+    /* 连接扇叶 */
+    --bracket2-width: 5.25rem;
+    --bracket2-height: 9.375rem;
+    /* 摇头按钮大小 */
+    --snake-size: 0.625rem;
+    --snake-height: 1.5rem;
+    --snake-hover: 2.5;
+    --snake-active: 6;
+    /* 扇叶大小 */
+    --fan-height: 17.5rem;
+    --fan-width: 3.75rem;
+    /* 扇叶转速（圈/s） */
+    --speed-1: .6s;
+    --speed-2: 0.5s;
+    --speed-3: 0.4s;
+    /* 风扇内部固定扇叶 */
+    --fan-block-width: 5.25rem;
+    --fan-block-height: 1.75rem;
+  }
+  @keyframes rotate{
+    50% {
+      transform: rotate(180deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes shark {
+    25% {
+      transform: rotate(-20deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+    75% {
+      transform: rotate(20deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .room {
+    background-color: #344c65;
+    display: flex;
+    justify-content: center;
+    box-sizing: content-box;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+  @media screen and (min-width: 701px) {
+    .fan {
+      align-self: center;
+      transform-style: preserve-3d;
+      /* transform: translateX(-30deg); */
+      transform:scale(0.75) translateY(calc(var(--bracket-height) / 1.5)) translateZ(6.25rem)rotateX(-24deg) rotateY(34deg) rotateX(90deg);
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .fan {
+      align-self: center;
+      transform-style: preserve-3d;
+      /* transform: translateX(-30deg); */
+      transform:scale(0.5) translateY(calc(var(--bracket-height) / 1.5)) translateZ(6.25rem)rotateX(-24deg) rotateY(34deg) rotateX(90deg);
+    }
+  }
+  /* 底座 */
+  .bottom {
+    height: var(--btm-length);
+    width: var(--btm-width);
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+    transform-style: preserve-3d;
+  }
+  .bottom::before,.bottom::after {
+    content: '';
+    height: var(--btm-height);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #d9d9d9;
+    border: 1px solid #d9d9d9;
+  }
+  .bottom::before {
+    transform-origin: 0 0;
+    width: var(--btm-length);
+    transform: rotate(90deg) rotateX(-90deg);
+  }
+  .bottom::after {
+    transform-origin: left top;
+    width: var(--btm-width);
+    transform: translateY(var(--btm-length)) rotateX(-90deg);
+  }
+
+  /* 底座上4个按钮 */
+  .speed-btn {
+    height: var(--speed-btn-size);
+    width: var(--speed-btn-size);
+    background-color: #d9d9d9;
+    transform-style: preserve-3d;
+    appearance: none; /* 移除默认的样式外观 */
+    -webkit-appearance: none; /* 特定于Webkit浏览器 */
+    -moz-appearance: none; /* 特定于Firefox浏览器 */
+    margin: 0; /* 移除默认的外边距 */
+    padding: 0; /* 移除默认的内边距 */
+    border: none; /* 移除默认的边框 */
+    transition: all 0.2s;
+    position: absolute;
+    transform: translateZ(calc(var(--speed-btn-size) * 2/3));
+    left: calc((100% - calc(var(--speed-btn-size) * 4 + var(--speed-btn-gap) * 3)) / 2  + (var(--i) - 1) * (var(--speed-btn-size) + var(--speed-btn-gap)));
+    bottom: 0.3125rem;
+  }
+  .speed-btn::before,.speed-btn::after {
+    content: '';
+    height: var(--speed-btn-size);
+    width: var(--speed-btn-size);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #d9d9d9;
+  }
+  .speed-btn::after {
+    transform-origin: left top;
+    transform: translateY(var(--speed-btn-size)) rotateX(-90deg);
+  }
+  .speed-btn::before {
+    transform-origin: 0 0;
+    transform: rotate(90deg) rotateX(-90deg);
+  }
+  .paused,.paused::before,.paused::after {
+    background-color: #E6A23C;
+    /* border: 1px solid #E6A23C;; */
+  }
+  .speed-btn.speed-btn-level:checked {
+    transform: translateZ(calc(var(--speed-btn-size) / var(--speed-btn-active)));
+    transition: all 0.2s;
+  }
+  .speed-btn.speed-btn-switch:active {
+    transform: translateZ(calc(var(--speed-btn-size) / var(--speed-btn-active)));
+    transition: all 0.5s;
+  }
+  .speed-btn:hover {
+    transform: translateZ(calc(var(--speed-btn-size) / var(--speed-btn-hover)));
+    transition: all 0.5s;
+  }
+
+  /* 连接底座的支撑柱 */
+  .bracket {
+    height: var(--bracket-width);
+    width: var(--bracket-width);
+    align-self: center;
+    position: absolute;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    transform-style: preserve-3d;
+    transform: translateZ(var(--bracket-height)) translateX(-50%);
+    left: 50%;
+    top: 0;
+  }
+  .bracket::before, .bracket::after {
+    content: '';
+    height: var(--bracket-width);
+    width: var(--bracket-height);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+  }
+  .bracket::before {
+    transform-origin: bottom left;
+    transform: rotate(90deg) rotateY(90deg);
+  }
+  .bracket::after {
+    transform-origin: left top;
+    transform: rotateY(90deg);
+  }
+
+  /* 摇头开关所在柱 */
+  .connect-bar-outer {
+    transform: translateZ(var(--bracket-width));
+    height: var(--bracket-width);
+    width: var(--bracket-width);
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+  }
+  .connect-bar {
+    height: var(--bracket-width);
+    width: var(--bracket-width);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+    /* 暗点 */
+
+    transform-style: preserve-3d;
+    animation: shark 3s infinite linear;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+  }
+  .connect-bar::before, .connect-bar::after {
+    content: '';
+    height: calc(var(--bracket-width));
+    width: var(--bracket-width);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+  }
+  .connect-bar::before {
+    transform-origin: 0 0;
+    transform: rotateY(-270deg);
+  }
+  .connect-bar::after {
+    transform-origin: left bottom;
+    transform: rotateX(-270deg);
+  }
+  /* 摇头 */
+  .snake-switch:checked + .connect-bar {
+    animation-play-state: running;
+  }
+
+  /* 连接扇叶的支撑柱 */
+  .bracket2 {
+    height: var(--bracket2-width);
+    width: var(--bracket2-width);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    background-color: #e6e6e6;
+    border: 1px solid #e6e6e6;
+    transform-style: preserve-3d;
+    transform-origin: 0 0;
+    transform: translateY(calc(var(--bracket2-width) + var(--bracket2-height))) rotateX(-90deg);
+  }
+  .bracket2::before, .bracket2::after {
+    content: '';
+    height: var(--bracket2-height);
+    width: var(--bracket2-width);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #e6e6e6;
+    border: 1px solid #e6e6e6;
+  }
+  .bracket2::before {
+    transform-origin: 0 0;
+    transform: rotate(90deg) rotateX(-90deg);
+  }
+  .bracket2::after {
+    transform-origin: 0 0;
+    transform: translateY(var(--bracket-width)) rotateX(-90deg) translateZ(calc(var(--bracket-width) * -1));
+  }
+
+  /* 风扇叶部分 */
+  .fan-leave {
+    height: var(--fan-height);
+    width: var(--fan-width);
+    background-color: #fff;
+    position: absolute;
+    transform-origin: 50% 0;
+    top: 50%;
+    /* animation: rotate 1s infinite linear; */
+    /* animation: rotate2 1s infinite linear; */
+  }
+  .fan-leave::after, .fan-leave::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 50% 0;
+    height: var(--fan-height);
+    width: var(--fan-width);
+    background-color: #fff;
+  }
+  .fan-leave::before {
+    transform: rotate(120deg);
+  }
+  .fan-leave::after {
+    transform: rotate(240deg);
+  }
+  .mask-layer {
+    position: absolute;
+    align-self: center;
+    background-color: rgba(255,255,255,.3);
+    border: 0.375rem solid #fff;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .inner, .outer {
+    height: calc(var(--fan-height) * 1.8);
+    width: calc(var(--fan-height) * 1.8);
+  }
+  .outer {
+    transform: translateZ(calc(var(--bracket-width) / 2));
+  }
+  .center {
+    height: calc(var(--fan-height) * 2.2);
+    width: calc(var(--fan-height) * 2.2);
+    /* transform: translateZ(calc(var(--fan-block-height) / 2)); */
+    /* position: relative; */
+  }
+  .block {
+    height: var(--fan-block-width);
+    width: var(--fan-block-width);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    transform-style: preserve-3d;
+    opacity: 1;
+    transform: translateZ(var(--fan-block-height));
+  }
+  .logo {
+    height: calc(var(--fan-block-width) * 1.5);
+    width: calc(var(--fan-block-width) * 1.5);
+    transform: translateZ(calc(var(--bracket-width) / 2));
+    background-color: #eee;
+    display:inline-block;
+    background: url(https://tse2-mm.cn.bing.net/th/id/OIP-C.cdT2aKqND-dzI_PA9Yf07gHaGc?w=199&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7) no-repeat center center;
+    background-size: 100% 100%;
+    opacity: 1;
+  }
+  .block::after,.block::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+    height: var(--fan-block-height);
+    width: var(--fan-block-width);
+    background-color: #ccc;
+    border: 1px solid #ccc;
+  }
+  .block::before {
+    transform: rotateX(-90deg);
+  }
+  .block::after {
+    transform: rotate(90deg) rotateX(-90deg);
+  }
+
+
+  /* 风速控制 */
+  .paused:checked ~ .bracket .connect-bar {
+    animation-play-state: paused !important;
+  }
+  .speed-btn.speed-btn-level.speed-1:checked ~ .bracket .fan-leave {
+    animation: rotate var(--speed-1) infinite linear;
+  }
+  .speed-btn.speed-btn-level.speed-2:checked ~ .bracket .fan-leave {
+    animation: rotate var(--speed-2) infinite linear;
+  }
+  .speed-btn.speed-btn-level.speed-3:checked ~ .bracket .fan-leave {
+    animation: rotate var(--speed-3) infinite linear;
+  }
+
+  /* 摇头控制 */
+  .snake-switch {
+    align-self: center;
+    height: var(--snake-size);
+    width: var(--snake-size);
+    background-color: #d9d9d9;
+    transform-style: preserve-3d;
+    appearance: none; /* 移除默认的样式外观 */
+    -webkit-appearance: none; /* 特定于Webkit浏览器 */
+    -moz-appearance: none; /* 特定于Firefox浏览器 */
+    margin: 0; /* 移除默认的外边距 */
+    padding: 0; /* 移除默认的内边距 */
+    border: none; /* 移除默认的边框 */
+    transition: all 0.2s;
+    position: absolute;
+    z-index: 9999;
+    transform: translateZ(var(--snake-height));
+  }
+  .snake-switch::before,.snake-switch::after {
+    content: '';
+    height: calc(var(--snake-height));
+    width: var(--snake-size);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #d9d9d9;
+  }
+  .snake-switch::after {
+    transform-origin: left top;
+    transform: translateY(var(--snake-size)) rotateX(-90deg);
+  }
+  .snake-switch::before {
+    transform-origin: 0 0;
+    transform: rotate(90deg) rotateX(-90deg);
+  }
+  .snake-switch:hover {
+    transform: translateZ(calc(var(--snake-height) / var(--snake-hover)));
+    transition: all 0.5s;
+  }
+  .connect-bar-outer .snake-switch:checked {
+    transform: translateZ(calc(var(--snake-height) / var(--snake-active)));
+    transition: all 0.2s;
+  }
+
+
+</style>
+
+<body>
+  <div class="room">
+    <div class="fan">
+      <div class="bottom">
+        <input type="radio" class="speed-btn speed-btn-switch paused" style="--i: 1" name="contact" value="0" />
+        <input type="radio" class="speed-btn speed-btn-level speed-1" style="--i: 2" name="contact" value="1" />
+        <input type="radio" class="speed-btn speed-btn-level speed-2" style="--i: 3" name="contact" value="2" />
+        <input type="radio" class="speed-btn speed-btn-level speed-3" style="--i: 4" name="contact" value="3" />
+        <div class="bracket">
+          <div class="connect-bar-outer">
+            <input type="checkbox" class="snake-switch"></input>
+            <div class="connect-bar">
+              <div class="bracket2">
+                <div class="mask-layer inner"></div>
+                <div class="block"></div>
+                <div class="fan-leave"></div>
+                <div class="mask-layer center"></div>
+                <div class="mask-layer outer"></div>
+                <div class="mask-layer logo"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

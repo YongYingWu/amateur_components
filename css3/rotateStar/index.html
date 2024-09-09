@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <!-- <link rel="stylesheet" href="//at.alicdn.com/t/c/font_4293613_mrpggi3rv8h.css"> -->
+    <link rel="stylesheet" href="./font/iconfont.css"></link>
+  </head>
+  <body>
+    <div class="area">
+      <div class="star-area" style="--i: 1">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 2">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 3">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 4">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 5">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 6">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 7">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 8">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 9">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 10">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 11">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+      <div class="star-area" style="--i: 12">
+        <i class="iconfont icon-xingxing"></i>
+      </div>
+    </div>
+  </body>
+  <style type="text/css">
+    @keyframes rotateSelf {
+      0% {
+        transform: rotate(0deg) scale(0);
+      }
+      50% {
+        transform: rotate(180deg) scale(3);
+      }
+      100% {
+        transform: rotate(360deg) scale(0);
+      }
+    }
+    @keyframes animateColor {
+      0% {
+        filter: hue-rotate(0);
+      }
+      25% {
+        filter: hue-rotate(25deg);
+      }
+      50% {
+        filter: hue-rotate(50deg);
+      }
+      75% {
+        filter: hue-rotate(75deg);
+      }
+      100% {
+        filter: hue-rotate(360deg)
+      }
+    }
+    @keyframes colorChangeSelf {
+      0% {
+        color: #3cc2ff;
+        filter: drop-shadow(0 0 5px #3cc2ff) drop-shadow(0 0 15px #3cc2ff) drop-shadow(0 0 30px #3cc2ff);
+      }
+      25% {
+        color: #46ff3c;
+        filter: drop-shadow(0 0 5px #46ff3c) drop-shadow(0 0 15px #46ff3c) drop-shadow(0 0 30px #46ff3c);
+      }
+      50% {
+        color: #e5ff3c;
+        filter: drop-shadow(0 0 5px #e5ff3c) drop-shadow(0 0 15px #e5ff3c) drop-shadow(0 0 30px #e5ff3c);
+      }
+      75% {
+        color: #46ff3c;
+        filter: drop-shadow(0 0 5px #46ff3c) drop-shadow(0 0 15px #46ff3c) drop-shadow(0 0 30px #46ff3c);
+      }
+      100% {
+        color: #3cc2ff;
+        filter: drop-shadow(0 0 5px #3cc2ff) drop-shadow(0 0 15px #3cc2ff) drop-shadow(0 0 30px #3cc2ff);
+      }
+    }
+    .area {
+      position: relative;
+    }
+    .iconfont {
+      animation: rotateSelf 2s linear calc(var(--i) * -0.17s) infinite, colorChangeSelf 2s linear infinite;
+    }
+    .star-area::before {
+      content: "\e870";
+      font-family: "iconfont";
+      font-size: 0.75em;
+      position: absolute;
+      animation: rotateParticle 2.4s linear calc(var(--i) * -0.2s) infinite;
+    }
+    @keyframes rotateParticle {
+      0% {
+        scale: 1;
+        opacity: 0;
+        rotate: 0;
+      }
+
+      50% {
+        scale: 1;
+        opacity: 1;
+        rotate: 180deg;
+      }
+
+      100% {
+        scale: 0;
+        opacity: 0;
+        rotate: 360deg;
+        filter: drop-shadow(-150px 0 #3cc2ff) drop-shadow(150px 0 #3cc2ff) drop-shadow(0 -150px #3cc2ff) drop-shadow(0 150px #3cc2ff);
+      }
+    }
+    .star-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      width: 50px;
+      transform-origin: 50px 150px;
+      transform: rotate(calc((var(--i) - 1) * 30deg));
+      position: absolute;
+      left: 200px;
+      top: 0;
+    }
+  </style>
+</html>

@@ -1,0 +1,65 @@
+<html>
+  <div class="container">
+    <div class="cube" style="--i: 0"></div>
+    <div class="cube" style="--i: 1"></div>
+    <div class="cube" style="--i: 2"></div>
+    <div class="cube" style="--i: 4"></div>
+    <div class="cube" style="--i: 5"></div>
+    <div class="cube" style="--i: 6"></div>
+    <div class="cube" style="--i: 7"></div>
+    <div class="cube" style="--i: 8"></div>
+    <div class="cube" style="--i: 9"></div>
+  </div>
+</html>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    --unit: 20px;
+    padding: calc(var(--unit));
+    width: calc(var(--unit) * 3);
+    height: calc(var(--unit) * 3);
+    display: grid;
+    transform-style: preserve-3d;
+    grid-template-columns: var(--unit) var(--unit) var(--unit);
+    grid-template-rows: var(--unit) var(--unit) var(--unit);
+    transform: rotateX(45deg) rotateZ(45deg);
+  }
+  @keyframes up-down {
+    50% {
+      transform: translateZ(calc(var(--unit)));
+    }
+  }
+
+  .cube {
+    width: var(--unit);
+    height:var(--unit);
+    background-color: #049dbc;
+    transform-style: preserve-3d;
+    /* 第一个结束 */
+    animation: up-down 1s infinite calc(var(--i) / 3 * -0.2s);
+    box-shadow:  calc(var(--unit) * 3) calc(var(--unit) * 3) calc(var(--unit) /2) rgba(145, 143, 143, 0.497);
+  }
+  .cube::before {
+    transform-origin: right top;
+    content: '';
+    display: block;
+    /* float: left; */
+    width: var(--unit);
+    height: var(--unit);
+    background-color: #057d95;
+    transform: rotateY(-90deg);
+  }
+  .cube::after {
+    transform-origin: 0 0;
+    content: "";
+    display: block;
+    /* float: left; */
+    width: var(--unit);
+    height: var(--unit);
+    background-color: #056e83;
+    transform: rotateX(-90deg);
+  }
+</style>
