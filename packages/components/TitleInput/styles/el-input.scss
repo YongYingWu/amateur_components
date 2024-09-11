@@ -1,0 +1,10 @@
+// TBD 按需调整
+.el-input {
+  .el-input__icon {
+    justify-content: center;
+  }
+}
+
+:deep(.el-input .el-input__wrapper) {
+  box-shadow: none;
+}

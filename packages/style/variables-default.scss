@@ -1,0 +1,116 @@
+@use 'sass:color';
+
+// ========== 颜色 ==========
+
+$pure-white: #fff !default;
+$pure-black: #000 !default;
+
+// 主题色
+$main-color: #3f7dd2 !default; // 主色
+$main-alpha-color: rgba($main-color, 0.08) !default; // 主色透明度色
+$main-light-color: color.mix($main-color, $pure-white, 10%) !default; // 主色亮色
+$main-shallow-color: color.mix($main-color, $pure-white, 90%) !default; // 主色浅色
+$main-deep-color: color.mix($main-color, $pure-black, 90%) !default; // 主色深色
+
+// 背景色
+$bg-color: color.mix($main-color, $pure-white, 3%) !default; // 背景色-基于主题色
+$bg-light-color: color.mix($bg-color, $pure-white, 10%) !default; // 背景色亮色
+$bg-shallow-color: color.mix($bg-color, $pure-white, 90%) !default; // 背景色浅色
+$bg-deep-color: color.mix($bg-color, $pure-black, 90%) !default; // 背景色深色
+
+// 灰色
+$gray-color: #f7f7f7 !default; // 灰色
+$gray-alpha-color: rgba($gray-color, 0.08) !default; // 灰色透明度色
+$gray-light-color: color.mix($gray-color, $pure-white, 10%) !default; // 灰色浅色
+$gray-shallow-color: color.mix($gray-color, $pure-white, 90%) !default; // 灰色 hover
+$gray-deep-color: color.mix($gray-color, $pure-black, 90%) !default; // 灰色 press
+
+// 字色
+$font-color: #495057 !default; // 字色
+$font-light-color: color.mix($font-color, $pure-white, 30%) !default; // 线色亮色
+$font-shallow-color: color.mix($font-color, $pure-white, 90%) !default; // 字色浅色
+$font-deep-color: #000 !default; // 字色深色
+
+$font-inverse-color: #f0f0f0 !default; // 字反色基础色
+$font-inverse-light-color: #c0c4cc !default; // 字反色浅色
+$font-inverse-shallow-color: color.mix($font-inverse-color, $pure-black, 90%) !default; // 字色浅色
+$font-inverse-deep-color: #fff !default; // 字反色深色
+
+// 线色
+$line-color: #d8dde1 !default; // 线色
+$line-alpha-color: rgba($line-color, 0.08) !default; // 线色透明度色
+$line-light-color: color.mix($line-color, $pure-white, 10%) !default; // 线色亮色
+$line-shallow-color: color.mix($line-color, $pure-white, 90%) !default; // 线色浅色
+$line-deep-color: color.mix($line-color, $pure-black, 90%) !default; // 线色深色
+
+// 成功色
+$success-color: #00b42a !default; // 成功色
+$success-alpha-color: rgba($success-color, 0.08) !default; // 成功色透明度色
+$success-light-color: color.mix($success-color, $pure-white, 10%) !default; // 成功色亮色
+$success-shallow-color: color.mix($success-color, $pure-white, 90%) !default; // 成功色浅色
+$success-deep-color: color.mix($success-color, $pure-black, 90%) !default; // 成功色深色
+
+// 提示色
+$tip-color: #1890ff !default; // 提示色
+$tip-alpha-color: rgba($tip-color, 0.08) !default; // 提示色透明度色
+$tip-light-color: color.mix($tip-color, $pure-white, 10%) !default; // 提示色亮色
+$tip-shallow-color: color.mix($tip-color, $pure-white, 90%) !default; // 提示色浅色
+$tip-deep-color: color.mix($tip-color, $pure-black, 90%) !default; // 提示色深色
+
+// 警告色
+$warn-color: #faad15 !default; // 警告色
+$warn-alpha-color: rgba($warn-color, 0.08) !default; // 警告色透明度色
+$warn-light-color: color.mix($warn-color, $pure-white, 10%) !default; // 警告色亮色
+$warn-shallow-color: color.mix($warn-color, $pure-white, 90%) !default; // 警告色浅色
+$warn-deep-color: color.mix($warn-color, $pure-black, 90%) !default; // 警告色深色
+
+// 错误色
+$error-color: #f5212d !default; // 错误色
+$error-alpha-color: rgba($error-color, 0.08) !default; // 错误色明度色
+$error-light-color: color.mix($error-color, $pure-white, 10%) !default; // 错误色亮色
+$error-shallow-color: color.mix($error-color, $pure-white, 90%) !default; // 错误色浅色
+$error-deep-color: color.mix($error-color, $pure-black, 90%) !default; // 错误色深色
+
+// 信息色
+$info-color: #8d968f !default; // 错误色
+$info-alpha-color: rgba($info-color, 0.08) !default; // 错误色明度色
+$info-light-color: color.mix($info-color, $pure-white, 10%) !default; // 错误色亮色
+$info-shallow-color: color.mix($info-color, $pure-white, 90%) !default; // 错误色浅色
+$info-deep-color: color.mix($info-color, $pure-black, 90%) !default; // 错误色深色
+
+// ========== 尺寸 ==========
+
+// 字体尺寸
+$font-xs: 12px !default; // 基础字号
+$font-s: $font-xs + 2px !default; // 小字号
+$font-m: $font-xs + 4px !default; // 中字号
+$font-l: $font-xs * 2 !default; // 大字号
+// 其他字体尺寸在使用时基于 $font-xs 计算获得
+
+// 间隙尺寸
+$gap-xs: 4px !default; // 超小间隙
+$gap-s: calc($gap-xs / 2 * 3) !default; // 小间隙
+$gap-m: calc($gap-xs * 3) !default; // 中间隙
+$gap-l: calc($gap-xs * 6) !default; // 大间隙
+// 其他间隙尺寸在使用时基于 $gap-xs 计算获得
+
+// 圆角尺寸
+$bd-radius-xs: 4px !default; // 超小圆角
+$bd-radius-s: calc($bd-radius-xs / 2 * 3) !default; // 小圆角
+$bd-radius-m: calc($bd-radius-xs * 3) !default; // 中圆角
+$bd-radius-l: calc($bd-radius-xs * 6) !default; // 大圆角
+// 其他圆角尺寸在使用时基于 $bd-radius-xs 计算获得
+
+// 阴影尺寸
+$shadow-color: rgba($pure-black, 0.1) !default; // 阴影色
+$box-shadow-xs: 0 0 $gap-xs 0 $shadow-color !default; // 超小阴影
+$box-shadow-s: 0 0 $gap-s 0 $shadow-color !default; // 小阴影
+$box-shadow-m: 0 0 $gap-m 0 $shadow-color !default; // 中阴影
+$box-shadow-l: 0 0 $gap-l 0 $shadow-color !default; // 大阴影
+
+// ========== 字体 ==========
+$font-family-text: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, 'Noto Sans',
+  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
+
+// 非标准
+$title-input-bg-color: #fafbfe !default;

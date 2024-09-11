@@ -1,0 +1,118 @@
+@use 'sass:color';
+@import '../../../style/variables-default.scss';
+@import './el-input.scss';
+@import './el-date-editor.scss';
+@import './el-input-number.scss';
+
+$font-title-color: color.mix($pure-white, $font-color, 25%);
+
+.activeOutline:focus-within {
+  border: 1px solid $main-color;
+}
+
+.h-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.v-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.flex-1) {
+  flex: 1;
+}
+
+.input-title-box {
+  border: $line-color solid 1px;
+  border-radius: $bd-radius-xs;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-size: 12px;
+  min-height: 28px;
+  flex: 0 0 300px;
+
+  input {
+    font-size: inherit;
+  }
+
+  .title {
+    box-sizing: border-box;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    background: $title-input-bg-color;
+    font-size: inherit;
+    color: $font-color;
+    border-right: $line-color solid 1px;
+    min-width: 72px;
+    justify-content: center;
+  }
+
+  .suffix {
+    box-sizing: border-box;
+    padding: 0 $gap-s;
+    display: flex;
+    align-items: center;
+    background: $title-input-bg-color;
+    font-size: inherit;
+    color: $font-color;
+    border-left: $line-color solid 1px;
+    justify-content: center;
+  }
+
+  .el-range-editor {
+    .el-input__icon,
+    .el-range-input,
+    .el-range-separator {
+      line-height: 26px;
+    }
+  }
+
+  .el-input__inner {
+    border: none;
+    width: 100%;
+  }
+
+  .el-input,
+  .el-select,
+  .el-date-editor {
+    flex: 1;
+    width: 0;
+    display: flex;
+  }
+
+  .el-input {
+    font-size: inherit;
+
+    input {
+      flex: 1;
+    }
+
+    .el-input__prefix,
+    .el-input__suffix {
+      .el-input__icon {
+        display: flex;
+
+        &::before {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .el-select {
+    display: flex;
+  }
+
+  :deep(.el-select .el-select__wrapper) {
+    flex: 1;
+    box-shadow: none;
+  }
+
+  .hidden-more {
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,64 @@
+// 全局滚动条样式
+$scroll-width: 7px !default;
+$scroll-color: rgb(193 193 193 / 40%) !default;
+$active-color: rgb(193 193 193 / 100%) !default;
+$track-active-color: rgb(0 0 0 / 10%) !default;
+$scroll-bg: transparent !default;
+
+/* webkit优先, w3c标准优雅降级 */
+
+/* Legacy browsers with `::-webkit-scrollbar-*` support */
+@supports selector(::-webkit-scrollbar) {
+  *::-webkit-scrollbar {
+    width: $scroll-width;
+    height: $scroll-width;
+  }
+
+  *::-webkit-scrollbar-track-piece {
+    background-color: $scroll-bg;
+    border-radius: calc($scroll-width / 2);
+  }
+
+  *::-webkit-scrollbar-corner {
+    display: none;
+    background-color: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    &:horizontal {
+      width: $scroll-width;
+      background-color: $scroll-color;
+      border-radius: calc($scroll-width / 2);
+
+      &:hover {
+        background-color: $active-color;
+      }
+    }
+
+    &:vertical {
+      width: $scroll-width;
+      background-color: $scroll-color;
+      border-radius: calc($scroll-width / 2);
+
+      &:hover {
+        background-color: $active-color;
+      }
+    }
+  }
+
+  *::-webkit-scrollbar-track {
+    border-radius: calc($scroll-width / 2);
+
+    &:hover {
+      box-shadow: inset 0 0 $scroll-width $track-active-color;
+    }
+  }
+}
+
+/* Modern browsers with `scrollbar-*` support */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: $active-color $scroll-bg;
+    scrollbar-width: thin;
+  }
+}

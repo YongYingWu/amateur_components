@@ -1,0 +1,78 @@
+$btn-width: 24px;
+
+.el-input-number {
+  display: flex;
+  flex: 1;
+  width: 0;
+
+  .el-input {
+    height: 100%;
+    flex: 1;
+
+    .el-input__inner {
+      padding: 0 calc($btn-width + 12px);
+    }
+  }
+
+  input {
+    border-radius: 0;
+  }
+
+  .el-input-number__decrease,
+  .el-input-number__increase {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $btn-width;
+    height: 100%;
+    box-sizing: border-box;
+    border-color: $line-color;
+    top: 0;
+    bottom: 0;
+    border-radius: 0;
+
+    &:hover {
+      background-color: color.mix($title-input-bg-color, $pure-black, 95%);
+    }
+  }
+
+  .el-input-number__decrease {
+    left: 0;
+  }
+
+  .el-input-number__increase {
+    right: 0;
+  }
+
+  &.is-controls-right {
+    .el-input {
+      .el-input__inner {
+        padding: 0 calc($btn-width + 12px) 0 12px;
+      }
+    }
+
+    .el-input-number__increase,
+    .el-input-number__decrease {
+      border-radius: 0;
+      width: $btn-width;
+      height: calc(100% / 2);
+      box-sizing: border-box;
+    }
+
+    .el-input-number__increase {
+      top: 0;
+      bottom: unset;
+    }
+
+    .el-input-number__decrease {
+      top: unset;
+      bottom: 0;
+      left: unset;
+      right: 0;
+    }
+  }
+}
+
+:deep(.el-input__wrapper) {
+  box-shadow: none !important;
+}

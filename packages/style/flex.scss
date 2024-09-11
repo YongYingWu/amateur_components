@@ -1,0 +1,16 @@
+// 横向 flex 容器
+.h-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+// 纵向 flex 容器
+.v-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+

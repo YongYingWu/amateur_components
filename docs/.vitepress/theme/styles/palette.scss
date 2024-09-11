@@ -1,0 +1,13 @@
+.VPDoc.has-aside .content-container {
+  max-width: none !important;
+}
+
+.VPContent {
+  .VPDoc {
+    padding-left: 0 !important;
+  }
+  /* 内容左边距调整 */
+  .content-container {
+    margin-left: 20px !important;
+  }
+}

@@ -1,0 +1,26 @@
+:deep(.el-date-editor) {
+  // .el-input__icon {
+  //   display: flex;
+  //   flex-direction: column;
+
+  //   &::before {
+  //     justify-content: center;
+  //   }
+  // }
+
+  // .el-range-input {
+  //   width: 45%;
+  // }
+
+  // .el-range-separator {
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   width: 8%;
+  //   font-size: inherit;
+  // }
+}
+
+:deep(.el-date-editor.el-input__wrapper) {
+  box-shadow: none;
+}
