@@ -5,6 +5,7 @@ export default {
       items: [
         { text: 'Hello组件', link: '/components/Hello/base.md' },
         { text: 'TitleInput', link: '/components/TitleInput/base.md' },
+        { text: 'Test', link: '/components/Test/base.md' }
       ]
     },
     {

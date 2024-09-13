@@ -10,5 +10,8 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "exclude": [
+    "node_modules"
+  ],
 }

@@ -11,6 +11,7 @@ export default defineConfig({
   description: 'Just playing around.',
   lang: 'cn-ZH',
   lastUpdated: true,
+  base: '/vitepress/',
   markdown: {
     config: (md) => mdPlugin(md),
   },
@@ -19,7 +20,7 @@ export default defineConfig({
   },
 
   themeConfig: {
-    outline: 3,
+    outline: [1,4],
     // socialLinks: [
     //   { icon: 'github', link: 'https://github.com/wocwin/t-ui-plus' }
     // ],
