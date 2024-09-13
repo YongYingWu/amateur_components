@@ -11,6 +11,7 @@ export default defineConfig({
   description: 'Just playing around.',
   lang: 'cn-ZH',
   lastUpdated: true,
+  outDir: '../dist',
   base: '/vitepress/',
   markdown: {
     config: (md) => mdPlugin(md),
