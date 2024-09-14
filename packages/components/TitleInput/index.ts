@@ -1,2 +1,5 @@
 import TitleInput from './src/index.vue'
-export default TitleInput
+import { withInstall } from "../withInstall"
+// const TTabs = withInstall(Tabs)
+// export default TTabs
+export default withInstall(TitleInput)

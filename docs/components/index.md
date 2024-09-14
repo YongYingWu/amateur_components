@@ -2,16 +2,14 @@
 
 ::: tip 提示
 
-@wocwin/t-ui-plus 基于 vue3 + ts + Element-plus 再次封装的基础组件
+组件基于 vue3 + ts + Element-plus 再次封装的基础组件
 
 :::
 
 ### 安装
 
 ```bash:no-line-numbers
-pnpm add @wocwin/t-ui-plus -S
-&
-npm install @wocwin/t-ui-plus -S
+
 ```
 
 ### 全局使用
@@ -28,8 +26,7 @@ import "element-plus/theme-chalk/dark/css-vars.css"
 import locale from "element-plus/es/locale/lang/zh-cn"
 // element-plus图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
-import TuiPlus from "@wocwin/t-ui-plus"
-import "@wocwin/t-ui-plus/lib/style.css"
+import amateurComponents from "amateurComponents"
 const app = createApp(App)
 // 注册所有图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -37,20 +34,17 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 // 注册ElementPlus
 app.use(ElementPlus, {
-  locale // 语言设置
-  // size: Cookies.get('size') || 'medium' // 尺寸设置
+  locale
 })
-app.use(TuiPlus)
+// 全局注册组件
+app.use(amateurComponents)
 app.mount("#app")
 ```
 ### 按需引入
-
 ```js
-// 在main.js中按下引入
-import '@wocwin/t-ui-plus/lib/style.css'
 // 单个.vue文件引入
 <script setup lang="ts">
-  import {TDetail, TForm} from "@wocwin/t-ui-plus"
+  import {TitleInput} from "amateurComponents"
 </script>
 ```
 ### 全部组件如下
@@ -60,44 +54,59 @@ import '@wocwin/t-ui-plus/lib/style.css'
 | TLayoutPageItem | 布局页面子项                                                                                                                                               |
 | TAdaptivePage   | [一屏组件](https://wocwin.github.io/t-ui-plus/components/TAdaptivePage/base.html?_blank)（继承TTable 及 TQueryCondition 组件的所有属性、事件、插槽、方法） |                                                             |
 
-### T-ui-plus 组件 Volar 类型提示
-
-```js
-// 需要在使用的项目的tsconfig.json文件中添加以下
-compilerOptions：{
-  "types": [
-      "@wocwin/t-ui-plus/components.d.ts",
-    ],
-}
-
-```
 
 ### 🔨 Vue3 + Vite 项目中安装引入报如下错误的解决方法
 
 > #### 把项目的 vite 版本升级到 4+
 
 
+### 项目目录结构
+
+```
+├─ .vitepress useless
+├─ .vscode vscode 配置
+├─ css3 css3 demo
+├─ docs 文档生成所在目录
+├─ packages 开发文件夹
+│  ├─ components 开发组件
+├─ public
+├─ scripts 脚本文件
+└─ template 模板文件 脚本生成所用模板
+```
+
 ### docs 文档结构目录
 
 ```
-├─ examples               # VPDemo组件自动解析此文件夹下的所有.vue文件
-├─ components             # .md文件
+├─ examples               # VPDemo自动解析此文件夹下的所有.vue文件
+├─ components             # .md文件 用于生成页面
 ├─ public                 # 静态资源文件
 ├─ .vitepress
 │  ├─ config              # 插件配置
 |  │  ├─ global.ts        # 全局变量定义
 |  │  └─ plugins.ts       # 自定义.md文件渲染
+│  ├─ guide               # 组件路由
+|  │  ├─ navbar.ts        # top路由
+|  │  └─ sidebar.ts       # 侧边路由
 │  ├─ theme               # 主题配置
 │  ├─ utils               # 文档展开隐藏代码高亮
 │  ├─ vitepress
-|  │  ├─ demo          # VPDemo组件源码
+|  │  ├─ demo          #    VPDemo组件源码
 |  │  ├─ style            # VPDemo组件样式
 |  │  └─ index.ts         # 暴露VPDemo组件
 │  └─ config.ts           # vitepress配置文件
-├─ index.md               # 文档home页面
-├─ tsconfig.json          # typescript 全局配置
-└─ vite.config.ts         # vite 全局配置文件（支持tsx）
+└─ index.md               # 文档home页面
 ```
+
+### 脚本介绍
+
+- `pnpm run create:comp $i` 在`packages/components`下创建`$i`组件, 以及生成`demo`文件
+- `pnpm run create:docs $i` 生成`$i`组件的`md`文档(包含`props` 组件`demo`)
+- `pnpm run create:demo $i` `pnpm run create:comp $i && pnpm run create:docs $i`
+
+### 快速创建组件
+- `pnpm run create:demo componentName`
+- 在`docs/.vitepress/guide/sidebar.ts` 文件中添加`componentName`路由
+- 在`packages/components/index.ts` 中导出`componentName`组件
 
 ### Git 提交规范（PR 提交规范）
 
@@ -112,18 +121,3 @@ compilerOptions：{
 - `test`: 补充缺失的测试用例或者修正现有的测试用例;
 - `revert`: 回滚操作;
 
-### vue2 基础组件
-
-> 基于 vue2 + Element-ui 和 ant-design-vue 二次封装的基础组件
-
----
-
-#### [Vue2 基础组件文档地址](https://wocwin.github.io/t-ui/)
-
----
-
-#### [Vue2 基础组件码云地址](https://gitee.com/wocwin/t-ui)
-
----
-
-#### [Vue2 基础组件 GitHub 地址](https://github.com/wocwin/t-ui)

@@ -12,3 +12,8 @@
 ### examples 编写组件demo的vue文件
 
 ## packages 编写组件本体的vue文件
+
+
+1. 使用`pnpm run create:demo` 快速生成一个demo文件
+2. 在`docs/.vitepress/guide/sidebar`中配置路由
+3. 在`packages/components/index.ts`中导出组件

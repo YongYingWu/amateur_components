@@ -1,2 +1,3 @@
 import template from './src/template.vue'
-export default template
+import { withInstall } from "../withInstall"
+export default withInstall(template)
