@@ -1,4 +1,5 @@
-// 用来创建一个DOCS
+// 用来创建一个DOCS(md文件)
+// TODO: emit和插槽生成
 import fs from 'fs'
 import path from 'path'
 import process from 'process';
