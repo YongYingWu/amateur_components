@@ -94,11 +94,14 @@ const options = computed({
 })
 const { draggable } = props
 
+// chckedCopy解决用户未传v-model（用户不需要v-model）
+const checkedCopy = ref([])
 const checked = computed({
   get() {
-    return props.modelValue ?? []
+    return props.modelValue ?? checkedCopy.value
   },
   set(value : any) {
+    checkedCopy.value = value
     emit('update:modelValue', value)
   }
 })
@@ -112,18 +115,19 @@ function sort(e) {
   if (draggable) {
     checked.value = options.value.filter(_ => checked.value.includes(_.value)).map(_ => _.value)
   }
-  emit('sort', e)
-  console.log(checked.value)
-  console.log(e)
+  // emit('sort', e)
+  // 改变统一通过change触发
+  change(e)
 }
 
-function change(item: any, e?: any) {
-  console.log(item, e)
+function change(item?: any, e?: any) {
+  const checkOption = options.value.filter(_ => checked.value.includes(_.value))
   if (draggable) {
-    checked.value = options.value.filter(_ => checked.value.includes(_.value)).map(_ => _.value)
+    checked.value = checkOption.map(_ => _.value)
   }
   emit('change', {
     value: checked.value,
+    checkOption,
     item,
     checked: e
   })
@@ -134,9 +138,11 @@ function search() {
 
 function clearChecked() {
   checked.value = checked.value.filter(_ => options.value.find(item => item.value === _)?.default)
+  change()
 }
 function checkAll() {
   checked.value = options.value.map(_ => _.value)
+  change()
 }
 function handleClickBtn() {
   visible.value = true

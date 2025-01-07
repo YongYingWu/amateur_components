@@ -16,7 +16,7 @@ export const FilterButtonProps = {
   // 选中数据的值
   modelValue: {
     type: [Array],
-    default: () => [],
+    default: null,
   },
 
   // 选项是否可拖拽，配合v-model:options使用

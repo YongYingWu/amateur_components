@@ -1,5 +1,5 @@
 <template>
-  <FilterButton v-model="checked" :options="options" @change="change" />
+  <FilterButton :options="options" @change="change" />
   <el-button style="float: right" @click="addOptions">add</el-button>
 </template>
 <script lang="ts" setup>
