@@ -22,7 +22,7 @@ export const FilterButtonProps = {
   // 选项是否可拖拽，配合v-model:options使用
   draggable: {
     type: Boolean,
-    default: true,
+    default: false,
   }
 }
 

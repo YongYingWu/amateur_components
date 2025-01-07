@@ -5,7 +5,8 @@ export default {
       items: [
         { text: 'Hello组件', link: '/components/Hello/base.md' },
         { text: 'TitleInput', link: '/components/TitleInput/base.md' },
-        { text: 'FilterButton', link: '/components/FilterButton/base.md' },
+        { text: 'FilterButton筛选按钮', link: '/components/FilterButton/base.md' },
+        { text: 'CodeEditor代码编辑器', link: '/components/CodeEditor/base.md' },
         { text: 'Test', link: '/components/Test/base.md' }
       ]
     },
