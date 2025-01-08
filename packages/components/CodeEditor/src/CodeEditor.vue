@@ -7,6 +7,7 @@
 import { onMounted, ref } from 'vue';
 import * as monaco from 'monaco-editor';
 import { format } from 'sql-formatter';
+import { CodeEditorProps, CodeEditorEmits } from './CodeEditor.ts';
 import { language as sqlLang } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
 import { language as javaLang } from 'monaco-editor/esm/vs/basic-languages/java/java.js';
 import { language as mysqlLang } from 'monaco-editor/esm/vs/basic-languages/mysql/mysql.js';
@@ -37,24 +38,8 @@ const languages = {
     mysql: mysqlLang,
     shell: shellLang
 }
-
-const provideLang = ['sql', 'java']
-const lang = 'sql'
-// 这个是自定义的表字段数据
-const fieldsArr = [
-    {
-        type: 'Field', // 这个类型是为了区分是关键字还是字段，具体可以看下文档
-        value: 'name'
-    },
-    {
-        type: 'Field',
-        value: 'age'
-    },
-    {
-        type: 'Field',
-        value: 'sex'
-    }
-]
+const { provideLang, lang, fieldsArr, modelValue } = defineProps(CodeEditorProps)
+const emit = defineEmits(CodeEditorEmits)
 
 const container = ref(null);
 onMounted(() => {
@@ -66,7 +51,7 @@ function initEditor() {
     const editor = monaco.editor.create(container.value, {
         theme: 'vs-light', // 主题
         language: lang,
-        value: '',
+        value: modelValue,
         renderLineHighlight: 'gutter',
         folding: true, // 是否折叠
         // roundedSelection: false,
@@ -123,6 +108,7 @@ function initEditor() {
         contextMenuOrder: 1,
         run: function () {
             // sql代码格式化
+            console.log(format(editor.getValue()))
             editor.setValue(format(editor.getValue()));
         }
     });
@@ -132,6 +118,8 @@ function initEditor() {
         // value.value = editor.getValue();
         console.log(event)
         console.log(editor.getValue)
+        emit('update:modelValue', editor.getValue())
+
     });
 }
 
