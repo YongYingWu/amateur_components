@@ -18,6 +18,17 @@ export default defineConfig({
   },
   vite: {
     plugins: [pagefindPlugin()],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: (e) => {
+            if (e.includes('/node_modules/monaco-editor/')) return 'monaco'
+            else
+              return 'vendor'
+          },
+        },
+      },
+    },
   },
 
   themeConfig: {

@@ -3,22 +3,28 @@
     <div ref="container" style="height: 100%;width: 100%;"></div>
 </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
+
 import { format } from 'sql-formatter';
 import { CodeEditorProps, CodeEditorEmits } from './CodeEditor.ts';
 import { language as sqlLang } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
 import { language as javaLang } from 'monaco-editor/esm/vs/basic-languages/java/java.js';
 import { language as mysqlLang } from 'monaco-editor/esm/vs/basic-languages/mysql/mysql.js';
 import { language as shellLang } from 'monaco-editor/esm/vs/basic-languages/shell/shell.js';
-// 解决控制台告警
+// 语言导入 monaco-editor/esm/metadata.js
+import 'monaco-editor/esm/vs/basic-languages/sql/sql.contribution'
+import 'monaco-editor/esm/vs/basic-languages/java/java.contribution'
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
-self.MonacoEnvironment = {
-  getWorker(workerId, label) {
+// 启用语言特性
+import './monacoImport'
+
+window.MonacoEnvironment = {
+  getWorker(workerId: any, label: string) {
     if (label === 'json') {
       return new jsonWorker();
     }
@@ -31,6 +37,7 @@ self.MonacoEnvironment = {
     return new editorWorker();
   }
 };
+console.log(monaco)
 
 const languages = {
     sql: sqlLang,
