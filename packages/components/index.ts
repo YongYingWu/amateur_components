@@ -2,6 +2,7 @@ import type { Component, App } from "vue"
 import TitleInput from "./TitleInput"
 import FilterButton from "./FilterButton"
 import CodeEditor from "./CodeEditor"
+import ContextMenu from './ContextMenu'
 
 // 存储组件列表
 const components: {
@@ -9,7 +10,8 @@ const components: {
 } = {
   TitleInput,
   FilterButton,
-  CodeEditor
+  CodeEditor,
+  ContextMenu
 }
 // 插件声明：声明所有插件
 // 插件注册：在 Vue 项目的入口文件中，通过 ( app.use(插件) ) 进行注册
@@ -30,7 +32,8 @@ const install: any = (app: any, router?: any) => {
 export {
   TitleInput,
   FilterButton,
-  CodeEditor
+  CodeEditor,
+  ContextMenu
 }
 export default {
   // 导出的对象必须具有 install，才能被 Vue.use() 方法安装

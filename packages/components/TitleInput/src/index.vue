@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { titleInputProps } from './TitleInput';
 defineOptions({
-  name: 'KitTitleInput',
+  name: 'TitleInput',
   inheritAttrs: false,
 })
 const props = defineProps(titleInputProps)

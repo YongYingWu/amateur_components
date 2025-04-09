@@ -1,47 +1,36 @@
 <template>
-<div>
-    <div ref="container" style="height: 100%;width: 100%;"></div>
-</div>
+    <div>
+        <div ref="container" style="height: 100%;width: 100%;"></div>
+    </div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { onMounted, ref } from 'vue';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-
+import * as monaco from 'monaco-editor';
 import { format } from 'sql-formatter';
 import { CodeEditorProps, CodeEditorEmits } from './CodeEditor.ts';
-import  languageSql   from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
-import  languageJava  from 'monaco-editor/esm/vs/basic-languages/java/java.js';
-import  languageMysql  from 'monaco-editor/esm/vs/basic-languages/mysql/mysql.js';
-import  languageShell  from 'monaco-editor/esm/vs/basic-languages/shell/shell.js';
-// 语言导入 monaco-editor/esm/metadata.js
-import 'monaco-editor/esm/vs/basic-languages/sql/sql.contribution'
-import 'monaco-editor/esm/vs/basic-languages/java/java.contribution'
+import { language as sqlLang } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
+import { language as javaLang } from 'monaco-editor/esm/vs/basic-languages/java/java.js';
+import { language as mysqlLang } from 'monaco-editor/esm/vs/basic-languages/mysql/mysql.js';
+import { language as shellLang } from 'monaco-editor/esm/vs/basic-languages/shell/shell.js';
+// 解决控制台告警
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
-// 启用语言特性
-import './monacoImport'
-const sqlLang = languageSql
-const javaLang = languageJava
-const mysqlLang = languageMysql
-const shellLang = languageShell
-
-window.MonacoEnvironment = {
-  getWorker(workerId: any, label: string) {
+self.MonacoEnvironment = {
+    getWorker(workerId, label) {
     if (label === 'json') {
-      return new jsonWorker();
+        return new jsonWorker();
     }
     if (label === 'typescript' || label === 'javascript') {
-      return new tsWorker();
+        return new tsWorker();
     }
     if (label === 'html') {
-      return new htmlWorker();
+        return new htmlWorker();
     }
     return new editorWorker();
-  }
+    }
 };
-console.log(monaco)
 
 const languages = {
     sql: sqlLang,

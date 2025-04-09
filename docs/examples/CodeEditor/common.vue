@@ -1,10 +1,9 @@
 <template>
-  <pre>{{ value }} </pre>
   <CodeEditor
     v-model="value"
-    :provideLang
-    :lang
-    :fieldsArr
+    :provideLang="provideLang"
+    :lang="lang"
+    :fieldsArr="fieldsArr"
     style="width: 100%; height: 200px;border: 1px solid #ccc;"/>
 </template>
 <script lang="ts" setup>

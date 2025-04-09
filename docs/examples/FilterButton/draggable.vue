@@ -1,5 +1,5 @@
 <template>
-  <FilterButton v-model="checked" :once="false" :options="options" @change="change" />
+  <FilterButton v-model="checked" :options="options" @change="change" draggable />
 </template>
 <script lang="ts" setup>
 import { ref, watch } from 'vue'

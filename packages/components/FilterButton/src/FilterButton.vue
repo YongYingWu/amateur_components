@@ -1,7 +1,7 @@
 <template>
   <div class="filter-button-box">
     <el-popover
-     visible
+      ref="popover"
       trigger="click"
       width="250px"
       placement="bottom"
@@ -11,142 +11,152 @@
           <el-input v-model="searchText" placeholder="筛选字段" prefix-icon="Search" @change="search" />
         </div>
         <div class="content-box">
-          <DefineTemplate v-slot="{isChecked}">
-            <el-checkbox-group v-model="checked">
+          <!-- 已选 -->
+          <div class="btm-line check-box">
+            <div class="check-box-title">
+              <span>已选{{ modelValue.length ?? 0 }}项</span>
+              <el-link :underline="false" :disabled="!clearable" type="primary" @click="clearChecked">清除已选</el-link>
+            </div>
+            <el-checkbox-group v-model="modelValue">
               <VueDraggable
                 :disabled="!draggable"
-                v-model="options"
+                v-model="modelValue"
                 @sort="sort">
-                <template v-for="(item, i) in options" :key="item.value">
+                <template v-for="(item, i) in checkedOption" :key="item[valueKey]">
                   <el-checkbox
-                    v-show="isChecked === checked.includes(item.value) && item.label.includes(searchText)"
+                    v-show="item[labelKey].toLowerCase().includes(searchText.toLowerCase())"
                     class="option"
+                    :class="{ draggable }"
                     :disabled="item.default"
-                    :label="item.label"
-                    :value="item.value"
+                    :label="item[labelKey]"
+                    :value="item[valueKey]"
                     @change="change(item, $event)">
                     <slot name="option" :item="item" :index="i">
-                      {{ item.label }}
+                      {{ item[labelKey] }}
                     </slot>
                   </el-checkbox>
                 </template>
               </VueDraggable>
             </el-checkbox-group>
-          </DefineTemplate>
-          <div class="btm-line check-box">
-            <div class="check-box-title">
-              <span>已选{{ checked.length ?? 0 }}项</span>
-              <el-link :underline="false" :disabled="!clearable" type="primary" @click="clearChecked">清除已选</el-link>
-            </div>
-            <ReuseTemplate :isChecked="true" />
           </div>
+          <!-- 未选 -->
           <div class="check-box">
             <div class="check-box-title">
               <span>所有字段</span>
               <el-link
                 :underline="false"
-                :disabled="checked.length === options.length"
+                :disabled="modelValue.length === options.length"
                 type="primary"
                 @click="checkAll">
                 全选
               </el-link>
             </div>
-            <ReuseTemplate :isChecked="false" />
+            <el-checkbox-group v-model="modelValue">
+              <template v-for="(item, i) in options" :key="item[valueKey]">
+                <el-checkbox
+                  v-show="!modelValue.includes(item.value) &&
+                    item[labelKey].toLowerCase().includes(searchText.toLowerCase())"
+                  class="option"
+                  :disabled="item.default"
+                  :label="item[labelKey]"
+                  :value="item[valueKey]"
+                  @change="change(item, $event)">
+                  <slot name="option" :item="item" :index="i">
+                    {{ item[labelKey] }}
+                  </slot>
+                </el-checkbox>
+              </template>
+            </el-checkbox-group>
           </div>
         </div>
       </template>
       <template #reference>
-        <div @click="handleClickBtn">
-          <slot name="trigger">
-            <el-button size="small"> 筛选 </el-button>
-          </slot>
-        </div>
+        <slot name="trigger">
+          <el-button size="small"> 筛选 </el-button>
+        </slot>
       </template>
     </el-popover>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { FilterButtonProps, FilterButtonEmits } from './FilterButton';
 import { VueDraggable  } from 'vue-draggable-plus'
-import { createReusableTemplate } from '@vueuse/core'
 defineOptions({
   name: 'FilterButton',
   inheritAttrs: false,
 })
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 const props = defineProps(FilterButtonProps)
 const emit = defineEmits(FilterButtonEmits)
-const visible = ref<boolean>(true)
 const searchText = ref<string>('')
 const clearable = computed<boolean>(() => {
-  return checked.value.length > 0 && !checked.value.every(_ => options.value.find(item => item.value === _)?.default)
+  return modelValue.value.length > 0 && !modelValue.value.every(_ => options.value.find(item => item.value === _)?.default)
 })
-const options = computed({
+const { draggable, labelKey, valueKey } = props
+// 用户不穿modelValue时，内部维护一个modelValue
+const _modelValue = ref<any[]>([])
+const modelValue = computed({
   get() {
-    return props.options
+    return props.modelValue ?? _modelValue.value
   },
   set(value : any) {
-    emit('update:options', value)
-
-  }
-})
-const { draggable } = props
-
-// chckedCopy解决用户未传v-model（用户不需要v-model）
-const checkedCopy = ref([])
-const checked = computed({
-  get() {
-    return props.modelValue ?? checkedCopy.value
-  },
-  set(value : any) {
-    checkedCopy.value = value
+    _modelValue.value = value
     emit('update:modelValue', value)
   }
 })
+const options = computed(() => props.options)
+const checkedOption = computed(() => {
+  return modelValue.value.map((_:any) => options.value.find((option:any) => option[valueKey] === _))
+})
+const unCheckOption = computed(() => {
+  return options.value.filter(_ => !modelValue.value.includes(_[valueKey]))
+})
+const popover = ref(null)
 
-onMounted(() => {
-  checked.value = options.value.filter(_ => _.default).map(_ => _.value)
+watch(options, (newOptions) => {
+  modelValue.value = modelValue.value.filter(value =>
+    newOptions.some(opt => opt[valueKey] === value)
+  )
 })
 
+onMounted(() => {
+  modelValue.value = [...new Set([
+    ...modelValue.value,
+    ...options.value.filter(_ => _.default).map(_ =>  _[valueKey])
+    ])
+  ]
+})
 function sort(e) {
-  // 顺序改变除了改变options的顺序，同时也要改变checked的顺序
-  if (draggable) {
-    checked.value = options.value.filter(_ => checked.value.includes(_.value)).map(_ => _.value)
-  }
-  // emit('sort', e)
-  // 改变统一通过change触发
+  emit('sort', e)
   change(e)
 }
-
-function change(item?: any, e?: any) {
-  const checkOption = options.value.filter(_ => checked.value.includes(_.value))
-  if (draggable) {
-    checked.value = checkOption.map(_ => _.value)
-  }
+function change(option?: any, e?: any) {
+  console.log('changeItem')
   emit('change', {
-    value: checked.value,
-    checkOption,
-    item,
-    checked: e
+    value: modelValue.value,
+    checkedOptions: checkedOption.value,
+    option,
+    isChecked: e
   })
+  if ((e ?? false) && props.once) {
+    popover.value?.hide()
+  }
 }
 function search() {
-  console.log(searchText.value)
+  emit('search', searchText.value)
 }
 
 function clearChecked() {
-  checked.value = checked.value.filter(_ => options.value.find(item => item.value === _)?.default)
+  modelValue.value =
+    modelValue.value.filter(_ =>
+    options.value.find(item => item[valueKey] === _)?.default)
+  emit('clear')
   change()
 }
 function checkAll() {
-  checked.value = options.value.map(_ => _.value)
+  modelValue.value.push(...unCheckOption.value.map(_ => _[valueKey]))
   change()
-}
-function handleClickBtn() {
-  visible.value = true
-  console.log(visible.value)
 }
 </script>
 
@@ -191,11 +201,11 @@ function handleClickBtn() {
     padding: 0;
     margin: 0;
 
-    &::after {
+    &.draggable::after {
       content: ':::';
       transform: rotateZ(90deg);
       text-align: center;
-      display: none;
+      display: block;
       float: right;
     }
   }
